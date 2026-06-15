@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.0.x
 
@@ -40,14 +40,14 @@ jobs:
         run: dotnet pack Mapshaper.Net/Mapshaper.Net.csproj --configuration Release --no-build --output artifacts
 
       - name: Upload package artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: nuget-package
           path: artifacts/*.nupkg
 
       - name: NuGet login
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: NuGet/login@v1
+        uses: NuGet/login@v1.2.0
         id: login
         with:
           user: sidz
