@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "NAME": "Alpha",
+        "CODE": "A1",
+        "DROP": "remove-me"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [0, 0],
+            [1, 0],
+            [1, 1],
+            [0, 1],
+            [0, 0]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NAME": "Beta",
+        "CODE": "B2",
+        "DROP": "remove-me-too"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [2, 0],
+            [3, 0],
+            [3, 1],
+            [2, 1],
+            [2, 0]
+          ]
+        ]
+      }
+    }
+  ]
+}

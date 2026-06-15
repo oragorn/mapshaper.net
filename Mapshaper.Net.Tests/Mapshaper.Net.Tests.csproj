@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Mapshaper.Net\Mapshaper.Net.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Fixtures\*.geojson" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
