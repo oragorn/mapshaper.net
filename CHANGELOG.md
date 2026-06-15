@@ -2,6 +2,10 @@
 
 ## 0.0.2 - Unreleased
 
+### Added
+
+- Modeled common mapshaper import and output flags through `MapshaperCommandOptions`, `MapshaperImportOptions`, and `MapshaperOutputOptions`.
+
 ### Changed
 
 - Derive NuGet package versions from release tags.

@@ -4,6 +4,10 @@ A thin .NET wrapper around the external [mapshaper](https://github.com/mbloch/ma
 
 This package does not bundle mapshaper. Install mapshaper separately and ensure `mapshaper` is available on `PATH`, or pass the executable path through `MapshaperOptions`.
 
+## Thin wrapper philosophy
+
+Mapshaper.Net does not parse geospatial files or reimplement mapshaper behavior. It invokes the external mapshaper CLI safely, passes arguments through in a predictable way, and captures the process output so .NET code can inspect success, errors, stdout, and stderr.
+
 ## Install mapshaper
 
 Mapshaper requires Node.js. After installing Node.js, install the mapshaper command line tools globally with npm:
@@ -46,6 +50,29 @@ Use `RunAsync()` for raw mapshaper arguments:
 
 ```csharp
 var result = await client.RunAsync("input.geojson", "-simplify", "10%", "-o", "output.geojson");
+```
+
+Pass modeled options for common import and output flags:
+
+```csharp
+var result = await client.ConvertAsync(
+    "input.geojson",
+    "output.json",
+    new MapshaperCommandOptions
+    {
+        Quiet = true,
+        Import = new MapshaperImportOptions
+        {
+            Encoding = "utf8",
+            IdField = "SOURCE_ID"
+        },
+        Output = new MapshaperOutputOptions
+        {
+            Format = "geojson",
+            Precision = "0.000001",
+            Force = true
+        }
+    });
 ```
 
 Configure the executable:

@@ -29,6 +29,81 @@ public sealed class MapshaperClientTests
     }
 
     [Fact]
+    public async Task ConvertAsync_WithCommandOptions_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.ConvertAsync(
+            "input.geojson",
+            "output.json",
+            new MapshaperCommandOptions
+            {
+                Quiet = true,
+                Import = new MapshaperImportOptions
+                {
+                    Encoding = "utf8",
+                    IdField = "SOURCE_ID",
+                },
+                Output = new MapshaperOutputOptions
+                {
+                    Format = "geojson",
+                    Encoding = "utf8",
+                    Precision = "0.000001",
+                    Force = true,
+                    Target = "counties",
+                    IdField = "FEATURE_ID",
+                },
+            });
+
+        Assert.Equal(
+            [
+                "-quiet",
+                "-i",
+                "input.geojson",
+                "encoding=utf8",
+                "id-field=SOURCE_ID",
+                "-o",
+                "output.json",
+                "format=geojson",
+                "encoding=utf8",
+                "precision=0.000001",
+                "force",
+                "target=counties",
+                "id-field=FEATURE_ID",
+            ],
+            runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task ConvertAsync_WithMultipleInputsAndCombineFiles_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.ConvertAsync(
+            ["a.geojson", "b.geojson"],
+            "combined.geojson",
+            new MapshaperCommandOptions
+            {
+                Import = new MapshaperImportOptions { CombineFiles = true },
+                Output = new MapshaperOutputOptions { Format = "geojson" },
+            });
+
+        Assert.Equal(
+            [
+                "-i",
+                "a.geojson",
+                "b.geojson",
+                "combine-files",
+                "-o",
+                "combined.geojson",
+                "format=geojson",
+            ],
+            runner.LastArguments);
+    }
+
+    [Fact]
     public async Task SimplifyAsync_BuildsExpectedArguments()
     {
         var runner = new FakeProcessRunner();
@@ -37,6 +112,31 @@ public sealed class MapshaperClientTests
         await client.SimplifyAsync("input.geojson", "output.geojson", "10%");
 
         Assert.Equal(["input.geojson", "-simplify", "10%", "-o", "output.geojson"], runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task SimplifyAsync_WithCommandOptions_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.SimplifyAsync(
+            "input.geojson",
+            "output.geojson",
+            "10%",
+            new MapshaperCommandOptions
+            {
+                Verbose = true,
+                Output = new MapshaperOutputOptions
+                {
+                    Format = "geojson",
+                    Force = true,
+                },
+            });
+
+        Assert.Equal(
+            ["-verbose", "input.geojson", "-simplify", "10%", "-o", "output.geojson", "format=geojson", "force"],
+            runner.LastArguments);
     }
 
     [Fact]
@@ -131,6 +231,30 @@ public sealed class MapshaperClientTests
         var client = new MapshaperClient(new MapshaperOptions(), new FakeProcessRunner());
 
         await Assert.ThrowsAsync<ArgumentException>(() => client.RunAsync(Array.Empty<string>()));
+    }
+
+    [Fact]
+    public async Task ConvertAsync_RejectsQuietAndVerboseTogether()
+    {
+        var client = new MapshaperClient(new MapshaperOptions(), new FakeProcessRunner());
+
+        await Assert.ThrowsAsync<ArgumentException>(
+            () => client.ConvertAsync(
+                "input.geojson",
+                "output.geojson",
+                new MapshaperCommandOptions { Quiet = true, Verbose = true }));
+    }
+
+    [Fact]
+    public async Task ConvertAsync_RejectsEmptyOptionValues()
+    {
+        var client = new MapshaperClient(new MapshaperOptions(), new FakeProcessRunner());
+
+        await Assert.ThrowsAsync<ArgumentException>(
+            () => client.ConvertAsync(
+                "input.geojson",
+                "output.geojson",
+                new MapshaperCommandOptions { Output = new MapshaperOutputOptions { Format = " " } }));
     }
 
     [Fact]

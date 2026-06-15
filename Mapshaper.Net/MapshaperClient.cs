@@ -69,7 +69,31 @@ public sealed class MapshaperClient
         string outputPath,
         CancellationToken cancellationToken = default)
     {
-        return RunAsync(BuildConvertArguments(inputPath, outputPath), cancellationToken);
+        return RunAsync(BuildConvertArguments(inputPath, outputPath, options: null), cancellationToken);
+    }
+
+    /// <summary>
+    /// Converts an input dataset to the output path or format inferred by mapshaper.
+    /// </summary>
+    public Task<MapshaperResult> ConvertAsync(
+        string inputPath,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return RunAsync(BuildConvertArguments(inputPath, outputPath, options), cancellationToken);
+    }
+
+    /// <summary>
+    /// Converts input datasets to the output path or format inferred by mapshaper.
+    /// </summary>
+    public Task<MapshaperResult> ConvertAsync(
+        IEnumerable<string> inputPaths,
+        string outputPath,
+        MapshaperCommandOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        return RunAsync(BuildConvertArguments(inputPaths, outputPath, options), cancellationToken);
     }
 
     /// <summary>
@@ -84,6 +108,18 @@ public sealed class MapshaperClient
     }
 
     /// <summary>
+    /// Converts an input dataset to the output path or format inferred by mapshaper.
+    /// </summary>
+    public Task<MapshaperResult> ConvertAsync(
+        FileInfo inputFile,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return ConvertAsync(GetFullName(inputFile), GetFullName(outputFile), options, cancellationToken);
+    }
+
+    /// <summary>
     /// Simplifies an input dataset and writes the result to the output path.
     /// </summary>
     public Task<MapshaperResult> SimplifyAsync(
@@ -93,7 +129,21 @@ public sealed class MapshaperClient
         CancellationToken cancellationToken = default)
     {
         ValidateValue(amount, nameof(amount));
-        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-simplify", amount), cancellationToken);
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-simplify", amount, options: null), cancellationToken);
+    }
+
+    /// <summary>
+    /// Simplifies an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> SimplifyAsync(
+        string inputPath,
+        string outputPath,
+        string amount,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        ValidateValue(amount, nameof(amount));
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-simplify", amount, options), cancellationToken);
     }
 
     /// <summary>
@@ -109,6 +159,19 @@ public sealed class MapshaperClient
     }
 
     /// <summary>
+    /// Simplifies an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> SimplifyAsync(
+        FileInfo inputFile,
+        FileInfo outputFile,
+        string amount,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return SimplifyAsync(GetFullName(inputFile), GetFullName(outputFile), amount, options, cancellationToken);
+    }
+
+    /// <summary>
     /// Clips an input dataset using another dataset and writes the result to the output path.
     /// </summary>
     public Task<MapshaperResult> ClipAsync(
@@ -118,7 +181,21 @@ public sealed class MapshaperClient
         CancellationToken cancellationToken = default)
     {
         ValidatePath(clipPath, nameof(clipPath));
-        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-clip", clipPath), cancellationToken);
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-clip", clipPath, options: null), cancellationToken);
+    }
+
+    /// <summary>
+    /// Clips an input dataset using another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> ClipAsync(
+        string inputPath,
+        string clipPath,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        ValidatePath(clipPath, nameof(clipPath));
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-clip", clipPath, options), cancellationToken);
     }
 
     /// <summary>
@@ -134,6 +211,19 @@ public sealed class MapshaperClient
     }
 
     /// <summary>
+    /// Clips an input dataset using another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> ClipAsync(
+        FileInfo inputFile,
+        FileInfo clipFile,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return ClipAsync(GetFullName(inputFile), GetFullName(clipFile), GetFullName(outputFile), options, cancellationToken);
+    }
+
+    /// <summary>
     /// Dissolves features using a field and writes the result to the output path.
     /// </summary>
     public Task<MapshaperResult> DissolveAsync(
@@ -143,7 +233,21 @@ public sealed class MapshaperClient
         CancellationToken cancellationToken = default)
     {
         ValidateValue(field, nameof(field));
-        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-dissolve", field), cancellationToken);
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-dissolve", field, options: null), cancellationToken);
+    }
+
+    /// <summary>
+    /// Dissolves features using a field and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> DissolveAsync(
+        string inputPath,
+        string field,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        ValidateValue(field, nameof(field));
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-dissolve", field, options), cancellationToken);
     }
 
     /// <summary>
@@ -159,6 +263,19 @@ public sealed class MapshaperClient
     }
 
     /// <summary>
+    /// Dissolves features using a field and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> DissolveAsync(
+        FileInfo inputFile,
+        string field,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return DissolveAsync(GetFullName(inputFile), field, GetFullName(outputFile), options, cancellationToken);
+    }
+
+    /// <summary>
     /// Keeps a selected set of fields and writes the result to the output path.
     /// </summary>
     public Task<MapshaperResult> FilterFieldsAsync(
@@ -168,7 +285,21 @@ public sealed class MapshaperClient
         CancellationToken cancellationToken = default)
     {
         var fieldList = NormalizeFields(fields);
-        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-filter-fields", string.Join(",", fieldList)), cancellationToken);
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-filter-fields", string.Join(",", fieldList), options: null), cancellationToken);
+    }
+
+    /// <summary>
+    /// Keeps a selected set of fields and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> FilterFieldsAsync(
+        string inputPath,
+        IEnumerable<string> fields,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        var fieldList = NormalizeFields(fields);
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-filter-fields", string.Join(",", fieldList), options), cancellationToken);
     }
 
     /// <summary>
@@ -184,6 +315,19 @@ public sealed class MapshaperClient
     }
 
     /// <summary>
+    /// Keeps a selected set of fields and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> FilterFieldsAsync(
+        FileInfo inputFile,
+        IEnumerable<string> fields,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return FilterFieldsAsync(GetFullName(inputFile), fields, GetFullName(outputFile), options, cancellationToken);
+    }
+
+    /// <summary>
     /// Projects an input dataset and writes the result to the output path.
     /// </summary>
     public Task<MapshaperResult> ProjectAsync(
@@ -193,7 +337,21 @@ public sealed class MapshaperClient
         CancellationToken cancellationToken = default)
     {
         ValidateValue(projection, nameof(projection));
-        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-proj", projection), cancellationToken);
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-proj", projection, options: null), cancellationToken);
+    }
+
+    /// <summary>
+    /// Projects an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> ProjectAsync(
+        string inputPath,
+        string projection,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        ValidateValue(projection, nameof(projection));
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-proj", projection, options), cancellationToken);
     }
 
     /// <summary>
@@ -208,24 +366,145 @@ public sealed class MapshaperClient
         return ProjectAsync(GetFullName(inputFile), projection, GetFullName(outputFile), cancellationToken);
     }
 
-    private static IReadOnlyList<string> BuildConvertArguments(string inputPath, string outputPath)
+    /// <summary>
+    /// Projects an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> ProjectAsync(
+        FileInfo inputFile,
+        string projection,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
     {
-        ValidatePath(inputPath, nameof(inputPath));
-        ValidatePath(outputPath, nameof(outputPath));
+        return ProjectAsync(GetFullName(inputFile), projection, GetFullName(outputFile), options, cancellationToken);
+    }
 
-        return new ReadOnlyCollection<string>([inputPath, "-o", outputPath]);
+    private static IReadOnlyList<string> BuildConvertArguments(
+        string inputPath,
+        string outputPath,
+        MapshaperCommandOptions? options)
+    {
+        return BuildConvertArguments([inputPath], outputPath, options);
+    }
+
+    private static IReadOnlyList<string> BuildConvertArguments(
+        IEnumerable<string> inputPaths,
+        string outputPath,
+        MapshaperCommandOptions? options)
+    {
+        var normalizedInputPaths = NormalizePaths(inputPaths, nameof(inputPaths));
+        ValidatePath(outputPath, nameof(outputPath));
+        ValidateCommandOptions(options);
+
+        var arguments = new List<string>();
+        AppendMessageOptions(arguments, options);
+        AppendInputArguments(arguments, normalizedInputPaths, options?.Import);
+        AppendOutputArguments(arguments, outputPath, options?.Output);
+
+        return new ReadOnlyCollection<string>(arguments);
     }
 
     private static IReadOnlyList<string> BuildOutputCommand(
         string inputPath,
         string outputPath,
         string command,
-        string commandValue)
+        string commandValue,
+        MapshaperCommandOptions? options)
     {
-        ValidatePath(inputPath, nameof(inputPath));
+        var normalizedInputPaths = NormalizePaths([inputPath], nameof(inputPath));
         ValidatePath(outputPath, nameof(outputPath));
+        ValidateCommandOptions(options);
 
-        return new ReadOnlyCollection<string>([inputPath, command, commandValue, "-o", outputPath]);
+        var arguments = new List<string>();
+        AppendMessageOptions(arguments, options);
+        AppendInputArguments(arguments, normalizedInputPaths, options?.Import);
+        arguments.Add(command);
+        arguments.Add(commandValue);
+        AppendOutputArguments(arguments, outputPath, options?.Output);
+
+        return new ReadOnlyCollection<string>(arguments);
+    }
+
+    private static void AppendMessageOptions(List<string> arguments, MapshaperCommandOptions? options)
+    {
+        if (options?.Quiet == true)
+        {
+            arguments.Add("-quiet");
+        }
+
+        if (options?.Verbose == true)
+        {
+            arguments.Add("-verbose");
+        }
+    }
+
+    private static void AppendInputArguments(
+        List<string> arguments,
+        IReadOnlyList<string> inputPaths,
+        MapshaperImportOptions? options)
+    {
+        if (inputPaths.Count == 1 && options is null)
+        {
+            arguments.Add(inputPaths[0]);
+            return;
+        }
+
+        arguments.Add("-i");
+        arguments.AddRange(inputPaths);
+
+        if (options?.Encoding is not null)
+        {
+            arguments.Add($"encoding={options.Encoding}");
+        }
+
+        if (options?.IdField is not null)
+        {
+            arguments.Add($"id-field={options.IdField}");
+        }
+
+        if (options?.CombineFiles == true)
+        {
+            arguments.Add("combine-files");
+        }
+    }
+
+    private static void AppendOutputArguments(
+        List<string> arguments,
+        string outputPath,
+        MapshaperOutputOptions? options)
+    {
+        arguments.Add("-o");
+        arguments.Add(outputPath);
+
+        if (options?.Format is not null)
+        {
+            arguments.Add($"format={options.Format}");
+        }
+
+        if (options?.Encoding is not null)
+        {
+            arguments.Add($"encoding={options.Encoding}");
+        }
+
+        if (options?.Precision is not null)
+        {
+            arguments.Add($"precision={options.Precision}");
+        }
+
+        if (options?.Force == true)
+        {
+            arguments.Add("force");
+        }
+
+        if (options?.Target is not null)
+        {
+            arguments.Add($"target={options.Target}");
+        }
+
+        if (options?.IdField is not null)
+        {
+            arguments.Add($"id-field={options.IdField}");
+        }
     }
 
     private static string GetFullName(FileInfo file)
@@ -247,6 +526,24 @@ public sealed class MapshaperClient
         foreach (var argument in normalized)
         {
             ValidateValue(argument, nameof(arguments));
+        }
+
+        return new ReadOnlyCollection<string>(normalized);
+    }
+
+    private static IReadOnlyList<string> NormalizePaths(IEnumerable<string> paths, string parameterName)
+    {
+        ArgumentNullException.ThrowIfNull(paths);
+
+        var normalized = paths.ToArray();
+        if (normalized.Length == 0)
+        {
+            throw new ArgumentException("At least one path is required.", parameterName);
+        }
+
+        foreach (var path in normalized)
+        {
+            ValidatePath(path, parameterName);
         }
 
         return new ReadOnlyCollection<string>(normalized);
@@ -283,6 +580,34 @@ public sealed class MapshaperClient
         return options;
     }
 
+    private static void ValidateCommandOptions(MapshaperCommandOptions? options)
+    {
+        if (options is null)
+        {
+            return;
+        }
+
+        if (options.Quiet && options.Verbose)
+        {
+            throw new ArgumentException("Quiet and verbose options cannot both be enabled.", nameof(options));
+        }
+
+        if (options.Import is not null)
+        {
+            ValidateOptionalValue(options.Import.Encoding, nameof(options.Import.Encoding));
+            ValidateOptionalValue(options.Import.IdField, nameof(options.Import.IdField));
+        }
+
+        if (options.Output is not null)
+        {
+            ValidateOptionalValue(options.Output.Format, nameof(options.Output.Format));
+            ValidateOptionalValue(options.Output.Encoding, nameof(options.Output.Encoding));
+            ValidateOptionalValue(options.Output.Precision, nameof(options.Output.Precision));
+            ValidateOptionalValue(options.Output.Target, nameof(options.Output.Target));
+            ValidateOptionalValue(options.Output.IdField, nameof(options.Output.IdField));
+        }
+    }
+
     private static void ValidatePath(string path, string parameterName)
     {
         ValidateValue(path, parameterName);
@@ -293,6 +618,14 @@ public sealed class MapshaperClient
         if (string.IsNullOrWhiteSpace(value))
         {
             throw new ArgumentException("Value cannot be null, empty, or whitespace.", parameterName);
+        }
+    }
+
+    private static void ValidateOptionalValue(string? value, string parameterName)
+    {
+        if (value is not null)
+        {
+            ValidateValue(value, parameterName);
         }
     }
 }
