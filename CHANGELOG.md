@@ -1,0 +1,20 @@
+# Changelog
+
+## 0.0.2 - Unreleased
+
+### Changed
+
+- Derive NuGet package versions from release tags.
+
+## 0.0.1 - 2026-06-15
+
+### Added
+
+- Initial `MapshaperClient` wrapper for running the external mapshaper CLI from .NET.
+- Raw argument execution through `RunAsync` and failure-checking execution through `RunOrThrowAsync`.
+- Convenience methods for common mapshaper workflows: convert, simplify, clip, dissolve, filter fields, and project.
+- `MapshaperOptions` for configuring the mapshaper executable path and working directory.
+- `MapshaperResult` and `MapshaperException` types for inspecting exit codes, standard output, standard error, and failed command arguments.
+- README documentation with installation notes and usage examples.
+- GitHub Actions CI for restore, build, test, and pack.
+- NuGet publishing through GitHub Actions Trusted Publishing.
