@@ -24,10 +24,7 @@ internal sealed class DefaultMapshaperProcessRunner : IMapshaperProcessRunner
             startInfo.WorkingDirectory = options.WorkingDirectory;
         }
 
-        foreach (var argument in arguments)
-        {
-            startInfo.ArgumentList.Add(argument);
-        }
+        startInfo.Arguments = BuildArgumentString(arguments);
 
         using var process = new Process { StartInfo = startInfo };
 
@@ -50,12 +47,12 @@ internal sealed class DefaultMapshaperProcessRunner : IMapshaperProcessRunner
             throw MapshaperException.ForStartFailure(options.ExecutablePath, arguments, exception);
         }
 
-        var stdOutTask = process.StandardOutput.ReadToEndAsync(cancellationToken);
-        var stdErrTask = process.StandardError.ReadToEndAsync(cancellationToken);
+        var stdOutTask = process.StandardOutput.ReadToEndAsync();
+        var stdErrTask = process.StandardError.ReadToEndAsync();
 
         try
         {
-            await process.WaitForExitAsync(cancellationToken).ConfigureAwait(false);
+            await WaitForExitAsync(process, cancellationToken).ConfigureAwait(false);
             var stdOut = await stdOutTask.ConfigureAwait(false);
             var stdErr = await stdErrTask.ConfigureAwait(false);
 
@@ -79,7 +76,7 @@ internal sealed class DefaultMapshaperProcessRunner : IMapshaperProcessRunner
         {
             if (!process.HasExited)
             {
-                process.Kill(entireProcessTree: true);
+                process.Kill();
             }
         }
         catch (InvalidOperationException)
@@ -88,5 +85,106 @@ internal sealed class DefaultMapshaperProcessRunner : IMapshaperProcessRunner
         catch (Win32Exception)
         {
         }
+    }
+
+    private static Task WaitForExitAsync(Process process, CancellationToken cancellationToken)
+    {
+        if (process.HasExited)
+        {
+            return Task.CompletedTask;
+        }
+
+        var completion = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        void OnExited(object? sender, EventArgs args) => completion.TrySetResult(true);
+
+        process.EnableRaisingEvents = true;
+        process.Exited += OnExited;
+
+        if (process.HasExited)
+        {
+            process.Exited -= OnExited;
+            return Task.CompletedTask;
+        }
+
+        if (!cancellationToken.CanBeCanceled)
+        {
+            return completion.Task.ContinueWith(
+                task =>
+                {
+                    process.Exited -= OnExited;
+                    return task.GetAwaiter().GetResult();
+                },
+                CancellationToken.None,
+                TaskContinuationOptions.ExecuteSynchronously,
+                TaskScheduler.Default);
+        }
+
+        return WaitWithCancellationAsync(process, completion, OnExited, cancellationToken);
+    }
+
+    private static async Task WaitWithCancellationAsync(
+        Process process,
+        TaskCompletionSource<bool> completion,
+        EventHandler onExited,
+        CancellationToken cancellationToken)
+    {
+        using (cancellationToken.Register(() => completion.TrySetCanceled()))
+        {
+            try
+            {
+                await completion.Task.ConfigureAwait(false);
+            }
+            finally
+            {
+                process.Exited -= onExited;
+            }
+        }
+    }
+
+    private static string BuildArgumentString(IEnumerable<string> arguments)
+    {
+        return string.Join(" ", arguments.Select(QuoteArgument));
+    }
+
+    private static string QuoteArgument(string argument)
+    {
+        if (argument.Length == 0)
+        {
+            return "\"\"";
+        }
+
+        if (!argument.Any(character => char.IsWhiteSpace(character) || character == '"'))
+        {
+            return argument;
+        }
+
+        var quoted = new System.Text.StringBuilder();
+        quoted.Append('"');
+
+        var backslashCount = 0;
+        foreach (var character in argument)
+        {
+            if (character == '\\')
+            {
+                backslashCount++;
+                continue;
+            }
+
+            if (character == '"')
+            {
+                quoted.Append('\\', backslashCount * 2 + 1);
+                quoted.Append('"');
+                backslashCount = 0;
+                continue;
+            }
+
+            quoted.Append('\\', backslashCount);
+            backslashCount = 0;
+            quoted.Append(character);
+        }
+
+        quoted.Append('\\', backslashCount * 2);
+        quoted.Append('"');
+        return quoted.ToString();
     }
 }

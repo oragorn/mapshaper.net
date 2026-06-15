@@ -509,13 +509,20 @@ public sealed class MapshaperClient
 
     private static string GetFullName(FileInfo file)
     {
-        ArgumentNullException.ThrowIfNull(file);
+        if (file is null)
+        {
+            throw new ArgumentNullException(nameof(file));
+        }
+
         return file.FullName;
     }
 
     private static IReadOnlyList<string> NormalizeArguments(IEnumerable<string> arguments)
     {
-        ArgumentNullException.ThrowIfNull(arguments);
+        if (arguments is null)
+        {
+            throw new ArgumentNullException(nameof(arguments));
+        }
 
         var normalized = arguments.ToArray();
         if (normalized.Length == 0)
@@ -533,7 +540,10 @@ public sealed class MapshaperClient
 
     private static IReadOnlyList<string> NormalizePaths(IEnumerable<string> paths, string parameterName)
     {
-        ArgumentNullException.ThrowIfNull(paths);
+        if (paths is null)
+        {
+            throw new ArgumentNullException(nameof(paths));
+        }
 
         var normalized = paths.ToArray();
         if (normalized.Length == 0)
@@ -551,7 +561,10 @@ public sealed class MapshaperClient
 
     private static IReadOnlyList<string> NormalizeFields(IEnumerable<string> fields)
     {
-        ArgumentNullException.ThrowIfNull(fields);
+        if (fields is null)
+        {
+            throw new ArgumentNullException(nameof(fields));
+        }
 
         var normalized = fields.ToArray();
         if (normalized.Length == 0)
@@ -569,7 +582,11 @@ public sealed class MapshaperClient
 
     private static MapshaperOptions ValidateOptions(MapshaperOptions options)
     {
-        ArgumentNullException.ThrowIfNull(options);
+        if (options is null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
         ValidateValue(options.ExecutablePath, nameof(options.ExecutablePath));
 
         if (options.WorkingDirectory is not null)

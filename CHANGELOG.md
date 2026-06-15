@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0 - 2026-06-16
+
+### Changed
+
+- Retargeted the library package to `netstandard2.0` for broader .NET compatibility.
+
 ## 0.0.2 - 2026-06-15
 
 ### Added

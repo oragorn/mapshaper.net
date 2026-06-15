@@ -82,7 +82,7 @@ public sealed class MapshaperException : Exception
     {
         const int maxLength = 500;
         var trimmed = value.Trim();
-        return trimmed.Length <= maxLength ? trimmed : trimmed[..maxLength] + "...";
+        return trimmed.Length <= maxLength ? trimmed : trimmed.Substring(0, maxLength) + "...";
     }
 
     private static string FormatArguments(IEnumerable<string> arguments)
