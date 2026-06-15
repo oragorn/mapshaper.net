@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Mapshaper.Net.Tests/Mapshaper.Net.Tests.csproj" />
+  <Project Path="Mapshaper.Net/Mapshaper.Net.csproj" />
+</Solution>

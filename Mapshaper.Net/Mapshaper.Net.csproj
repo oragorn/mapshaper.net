@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Mapshaper.Net</PackageId>
+    <Title>Mapshaper.Net</Title>
+    <Description>A thin C# wrapper around the external mapshaper CLI.</Description>
+    <Authors>Mapshaper.Net Contributors</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>mapshaper;gis;geojson;shapefile;topojson</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
