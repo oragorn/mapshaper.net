@@ -5,7 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Mapshaper.Net</PackageId>
-    <Version>0.0.1</Version>
     <Title>Mapshaper.Net</Title>
     <Description>A thin C# wrapper around the external mapshaper CLI.</Description>
     <Authors>Mapshaper.Net Contributors</Authors>
