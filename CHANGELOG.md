@@ -10,6 +10,7 @@
 ### Changed
 
 - Derive NuGet package versions from release tags.
+- Add richer NuGet metadata, package icon, release notes, and Source Link support.
 
 ## 0.0.1 - 2026-06-15
 

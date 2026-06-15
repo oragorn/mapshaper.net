@@ -8,16 +8,29 @@
     <Title>Mapshaper.Net</Title>
     <Description>A thin C# wrapper around the external mapshaper CLI.</Description>
     <Authors>Mapshaper.Net Contributors</Authors>
+    <PackageProjectUrl>https://github.com/oragorn/mapshaper.net</PackageProjectUrl>
+    <PackageIcon>package-icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>See the changelog at https://github.com/oragorn/mapshaper.net/blob/main/CHANGELOG.md.</PackageReleaseNotes>
     <PackageTags>mapshaper;gis;geojson;shapefile;topojson</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/oragorn/mapshaper.net</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\assets\package-icon.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

@@ -42,18 +42,22 @@ jobs:
         run: |
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
             echo "package_version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+            echo "release_notes=See https://github.com/oragorn/mapshaper.net/releases/tag/$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
           else
             echo "package_version=0.0.0-ci" >> "$GITHUB_OUTPUT"
+            echo "release_notes=See https://github.com/oragorn/mapshaper.net/blob/main/CHANGELOG.md" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Pack
-        run: dotnet pack Mapshaper.Net/Mapshaper.Net.csproj --configuration Release --no-build --output artifacts /p:PackageVersion=${{ steps.version.outputs.package_version }}
+        run: dotnet pack Mapshaper.Net/Mapshaper.Net.csproj --configuration Release --no-build --output artifacts /p:PackageVersion=${{ steps.version.outputs.package_version }} /p:PackageReleaseNotes="${{ steps.version.outputs.release_notes }}"
 
       - name: Upload package artifact
         uses: actions/upload-artifact@v6
         with:
           name: nuget-package
-          path: artifacts/*.nupkg
+          path: |
+            artifacts/*.nupkg
+            artifacts/*.snupkg
 
       - name: NuGet login
         if: startsWith(github.ref, 'refs/tags/v')
@@ -65,6 +69,10 @@ jobs:
       - name: Publish to NuGet
         if: startsWith(github.ref, 'refs/tags/v')
         run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Publish symbols to NuGet
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: dotnet nuget push "artifacts/*.snupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Create GitHub release notes
         if: startsWith(github.ref, 'refs/tags/v')
@@ -84,6 +92,6 @@ jobs:
       - name: Create GitHub release
         if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
-        run: gh release create "$GITHUB_REF_NAME" artifacts/*.nupkg --title "Mapshaper.Net ${GITHUB_REF_NAME#v}" --notes-file release-notes.md
+        run: gh release create "$GITHUB_REF_NAME" artifacts/*.nupkg artifacts/*.snupkg --title "Mapshaper.Net ${GITHUB_REF_NAME#v}" --notes-file release-notes.md
         env:
           GH_TOKEN: ${{ github.token }}
