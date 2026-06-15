@@ -1,10 +1,11 @@
 # Changelog
 
-## 0.0.2 - Unreleased
+## 0.0.2 - 2026-06-15
 
 ### Added
 
 - Modeled common mapshaper import and output flags through `MapshaperCommandOptions`, `MapshaperImportOptions`, and `MapshaperOutputOptions`.
+- Documented the thin wrapper philosophy in the README.
 
 ### Changed
 
