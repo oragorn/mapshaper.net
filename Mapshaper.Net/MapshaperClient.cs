@@ -397,8 +397,8 @@ public sealed class MapshaperClient
         ValidateCommandOptions(options);
 
         var arguments = new List<string>();
-        AppendMessageOptions(arguments, options);
         AppendInputArguments(arguments, normalizedInputPaths, options?.Import);
+        AppendMessageOptions(arguments, options);
         AppendOutputArguments(arguments, outputPath, options?.Output);
 
         return new ReadOnlyCollection<string>(arguments);
@@ -416,8 +416,8 @@ public sealed class MapshaperClient
         ValidateCommandOptions(options);
 
         var arguments = new List<string>();
-        AppendMessageOptions(arguments, options);
         AppendInputArguments(arguments, normalizedInputPaths, options?.Import);
+        AppendMessageOptions(arguments, options);
         arguments.Add(command);
         arguments.Add(commandValue);
         AppendOutputArguments(arguments, outputPath, options?.Output);

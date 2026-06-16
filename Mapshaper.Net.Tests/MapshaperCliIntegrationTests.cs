@@ -32,7 +32,11 @@ public sealed class MapshaperCliIntegrationTests
         var outputPath = Path.Combine(tempDirectory.Path, "simplified.geojson");
         var client = CreateClient();
 
-        var result = await client.SimplifyAsync(inputPath, outputPath, "50%");
+        var result = await client.SimplifyAsync(
+            inputPath,
+            outputPath,
+            "50%",
+            new MapshaperCommandOptions { Quiet = true });
 
         Assert.True(result.IsSuccess, result.StdErr);
         Assert.True(File.Exists(outputPath));

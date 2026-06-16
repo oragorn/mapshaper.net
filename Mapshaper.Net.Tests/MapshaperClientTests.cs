@@ -58,11 +58,11 @@ public sealed class MapshaperClientTests
 
         Assert.Equal(
             [
-                "-quiet",
                 "-i",
                 "input.geojson",
                 "encoding=utf8",
                 "id-field=SOURCE_ID",
+                "-quiet",
                 "-o",
                 "output.json",
                 "format=geojson",
@@ -135,7 +135,7 @@ public sealed class MapshaperClientTests
             });
 
         Assert.Equal(
-            ["-verbose", "input.geojson", "-simplify", "10%", "-o", "output.geojson", "format=geojson", "force"],
+            ["input.geojson", "-verbose", "-simplify", "10%", "-o", "output.geojson", "format=geojson", "force"],
             runner.LastArguments);
     }
 
