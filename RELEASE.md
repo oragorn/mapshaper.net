@@ -25,7 +25,7 @@ This project publishes NuGet packages and GitHub Releases from version tags.
 
 2. Commit and push the changelog.
 
-   ```powershell
+   ```shell
    git add CHANGELOG.md
    git commit -m "Prepare 0.0.2 release"
    git push origin main
@@ -41,7 +41,7 @@ This project publishes NuGet packages and GitHub Releases from version tags.
 
 4. Create and push the version tag.
 
-   ```powershell
+   ```shell
    git tag v0.0.2
    git push origin v0.0.2
    ```

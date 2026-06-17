@@ -12,19 +12,19 @@ Thank you for helping improve Mapshaper.Net.
 
 Install the .NET SDK, Node.js, and the external mapshaper CLI:
 
-```powershell
+```shell
 npm install -g mapshaper
 ```
 
 Verify the CLI is available:
 
-```powershell
+```shell
 mapshaper -v
 ```
 
 Restore, build, and test the repository:
 
-```powershell
+```shell
 dotnet restore
 dotnet build
 dotnet test

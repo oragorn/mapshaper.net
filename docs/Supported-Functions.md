@@ -2,6 +2,8 @@
 
 Mapshaper.Net exposes a small set of high-level convenience methods and a broader fluent pipeline for mapshaper commands. The package remains a thin wrapper: command behavior, accepted command arguments, and geospatial processing results come from the external `mapshaper` CLI.
 
+The library targets `netstandard2.0` and is intended to run on major .NET-supported operating systems, including Windows, Linux, and macOS. Runtime behavior also depends on Node.js and the external `mapshaper` CLI being available for the target environment.
+
 ## MapshaperClient
 
 `MapshaperClient` is the main entry point for running mapshaper.
@@ -170,7 +172,7 @@ var result = await client
 
 | Property | Purpose |
 | --- | --- |
-| `ExecutablePath` | Executable name or full path used to run mapshaper. Defaults to `mapshaper`. |
+| `ExecutablePath` | Executable name or path used to run mapshaper. Defaults to `mapshaper`; set it when the CLI is installed outside `PATH`. |
 | `WorkingDirectory` | Working directory for mapshaper, or `null` to use the current process directory. |
 
 `MapshaperCommandOptions` applies common flags to high-level client methods.

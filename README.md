@@ -17,6 +17,7 @@ This package does not bundle mapshaper. Install mapshaper separately and ensure 
 
 ## Requirements
 
+- A .NET runtime compatible with `netstandard2.0`. The library is intended to run on major .NET-supported operating systems, including Windows, Linux, and macOS.
 - .NET SDK for development and testing.
 - Node.js and the external `mapshaper` CLI at runtime.
 
@@ -28,22 +29,22 @@ Mapshaper.Net does not parse geospatial files or reimplement mapshaper behavior.
 
 Mapshaper requires Node.js. After installing Node.js, install the mapshaper command line tools globally with npm:
 
-```powershell
+```shell
 npm install -g mapshaper
 ```
 
 Confirm the executable is available:
 
-```powershell
+```shell
 mapshaper -v
 ```
 
-If `mapshaper` is not on `PATH`, pass the full path to the installed executable or shim.
+If `mapshaper` is not on `PATH`, pass the executable name or path through configuration. The exact path depends on the operating system and installation method.
 
 ```csharp
 var client = new MapshaperClient(new MapshaperOptions
 {
-    ExecutablePath = @"C:\Users\you\AppData\Roaming\npm\mapshaper.cmd"
+    ExecutablePath = Environment.GetEnvironmentVariable("MAPSHAPER_PATH") ?? "mapshaper"
 });
 ```
 
@@ -51,7 +52,7 @@ var client = new MapshaperClient(new MapshaperOptions
 
 Install the package from NuGet:
 
-```powershell
+```shell
 dotnet add package Mapshaper.Net
 ```
 
@@ -116,7 +117,7 @@ Configure the executable:
 ```csharp
 var client = new MapshaperClient(new MapshaperOptions
 {
-    ExecutablePath = @"C:\tools\mapshaper.cmd"
+    ExecutablePath = Environment.GetEnvironmentVariable("MAPSHAPER_PATH") ?? "mapshaper"
 });
 ```
 
@@ -147,7 +148,7 @@ await client
 
 Restore, build, and test the repository with the .NET SDK:
 
-```powershell
+```shell
 dotnet restore
 dotnet build
 dotnet test
