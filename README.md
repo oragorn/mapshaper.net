@@ -52,6 +52,18 @@ Use `RunAsync()` for raw mapshaper arguments:
 var result = await client.RunAsync("input.geojson", "-simplify", "10%", "-o", "output.geojson");
 ```
 
+Use `CreatePipeline()` to compose thin wrappers for mapshaper commands:
+
+```csharp
+var result = await client
+    .CreatePipeline("input.geojson")
+    .Clean()
+    .Filter("POP > 0")
+    .RenameFields("NAME=label")
+    .Output("output.geojson", new MapshaperOutputOptions { Force = true })
+    .RunAsync();
+```
+
 Pass modeled options for common import and output flags:
 
 ```csharp

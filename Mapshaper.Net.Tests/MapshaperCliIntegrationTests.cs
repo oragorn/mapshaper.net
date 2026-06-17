@@ -71,6 +71,30 @@ public sealed class MapshaperCliIntegrationTests
         }
     }
 
+    [MapshaperCliFact]
+    public async Task Pipeline_WithRealCli_FiltersAndWritesGeoJson()
+    {
+        using var tempDirectory = TemporaryDirectory.Create();
+        var inputPath = GetFixturePath();
+        var outputPath = Path.Combine(tempDirectory.Path, "pipeline-filtered.geojson");
+        var client = CreateClient();
+
+        var result = await client
+            .CreatePipeline(inputPath)
+            .Quiet()
+            .Filter("CODE == 'A1'")
+            .Output(outputPath, new MapshaperOutputOptions { Format = "geojson" })
+            .RunAsync();
+
+        Assert.True(result.IsSuccess, result.StdErr);
+        Assert.True(File.Exists(outputPath));
+
+        using var document = JsonDocument.Parse(await File.ReadAllTextAsync(outputPath));
+        var features = document.RootElement.GetProperty("features").EnumerateArray().ToArray();
+        Assert.Single(features);
+        Assert.Equal("A1", features[0].GetProperty("properties").GetProperty("CODE").GetString());
+    }
+
     private static string GetFixturePath()
     {
         return Path.Combine(AppContext.BaseDirectory, "Fixtures", "two-polygons.geojson");

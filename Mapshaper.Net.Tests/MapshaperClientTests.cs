@@ -4,6 +4,76 @@ namespace Mapshaper.Net.Tests;
 
 public sealed class MapshaperClientTests
 {
+    public static IEnumerable<object[]> PipelineCommandWrappers()
+    {
+        yield return ["-affine", (Action<MapshaperPipeline>)(pipeline => pipeline.Affine("arg=value"))];
+        yield return ["-calc", (Action<MapshaperPipeline>)(pipeline => pipeline.Calc("arg=value"))];
+        yield return ["-classify", (Action<MapshaperPipeline>)(pipeline => pipeline.Classify("arg=value"))];
+        yield return ["-clean", (Action<MapshaperPipeline>)(pipeline => pipeline.Clean("arg=value"))];
+        yield return ["-clip", (Action<MapshaperPipeline>)(pipeline => pipeline.Clip("arg=value"))];
+        yield return ["-colorizer", (Action<MapshaperPipeline>)(pipeline => pipeline.Colorizer("arg=value"))];
+        yield return ["-colors", (Action<MapshaperPipeline>)(pipeline => pipeline.Colors("arg=value"))];
+        yield return ["-comment", (Action<MapshaperPipeline>)(pipeline => pipeline.Comment("arg=value"))];
+        yield return ["-dashlines", (Action<MapshaperPipeline>)(pipeline => pipeline.Dashlines("arg=value"))];
+        yield return ["-dissolve", (Action<MapshaperPipeline>)(pipeline => pipeline.Dissolve("arg=value"))];
+        yield return ["-dissolve2", (Action<MapshaperPipeline>)(pipeline => pipeline.Dissolve2("arg=value"))];
+        yield return ["-divide", (Action<MapshaperPipeline>)(pipeline => pipeline.Divide("arg=value"))];
+        yield return ["-dots", (Action<MapshaperPipeline>)(pipeline => pipeline.Dots("arg=value"))];
+        yield return ["-drop", (Action<MapshaperPipeline>)(pipeline => pipeline.Drop("arg=value"))];
+        yield return ["-each", (Action<MapshaperPipeline>)(pipeline => pipeline.Each("arg=value"))];
+        yield return ["-elif", (Action<MapshaperPipeline>)(pipeline => pipeline.Elif("arg=value"))];
+        yield return ["-else", (Action<MapshaperPipeline>)(pipeline => pipeline.Else("arg=value"))];
+        yield return ["-encodings", (Action<MapshaperPipeline>)(pipeline => pipeline.Encodings("arg=value"))];
+        yield return ["-endif", (Action<MapshaperPipeline>)(pipeline => pipeline.Endif("arg=value"))];
+        yield return ["-erase", (Action<MapshaperPipeline>)(pipeline => pipeline.Erase("arg=value"))];
+        yield return ["-explode", (Action<MapshaperPipeline>)(pipeline => pipeline.Explode("arg=value"))];
+        yield return ["-filter", (Action<MapshaperPipeline>)(pipeline => pipeline.Filter("arg=value"))];
+        yield return ["-filter-fields", (Action<MapshaperPipeline>)(pipeline => pipeline.FilterFields("arg=value"))];
+        yield return ["-filter-islands", (Action<MapshaperPipeline>)(pipeline => pipeline.FilterIslands("arg=value"))];
+        yield return ["-filter-slivers", (Action<MapshaperPipeline>)(pipeline => pipeline.FilterSlivers("arg=value"))];
+        yield return ["-frame", (Action<MapshaperPipeline>)(pipeline => pipeline.Frame("arg=value"))];
+        yield return ["-graticule", (Action<MapshaperPipeline>)(pipeline => pipeline.Graticule("arg=value"))];
+        yield return ["-grid", (Action<MapshaperPipeline>)(pipeline => pipeline.Grid("arg=value"))];
+        yield return ["-help", (Action<MapshaperPipeline>)(pipeline => pipeline.Help("arg=value"))];
+        yield return ["-if", (Action<MapshaperPipeline>)(pipeline => pipeline.If("arg=value"))];
+        yield return ["-include", (Action<MapshaperPipeline>)(pipeline => pipeline.Include("arg=value"))];
+        yield return ["-info", (Action<MapshaperPipeline>)(pipeline => pipeline.Info("arg=value"))];
+        yield return ["-inlay", (Action<MapshaperPipeline>)(pipeline => pipeline.Inlay("arg=value"))];
+        yield return ["-innerlines", (Action<MapshaperPipeline>)(pipeline => pipeline.Innerlines("arg=value"))];
+        yield return ["-inspect", (Action<MapshaperPipeline>)(pipeline => pipeline.Inspect("arg=value"))];
+        yield return ["-join", (Action<MapshaperPipeline>)(pipeline => pipeline.Join("arg=value"))];
+        yield return ["-lines", (Action<MapshaperPipeline>)(pipeline => pipeline.Lines("arg=value"))];
+        yield return ["-merge-layers", (Action<MapshaperPipeline>)(pipeline => pipeline.MergeLayers("arg=value"))];
+        yield return ["-mosaic", (Action<MapshaperPipeline>)(pipeline => pipeline.Mosaic("arg=value"))];
+        yield return ["-point-grid", (Action<MapshaperPipeline>)(pipeline => pipeline.PointGrid("arg=value"))];
+        yield return ["-points", (Action<MapshaperPipeline>)(pipeline => pipeline.Points("arg=value"))];
+        yield return ["-polygons", (Action<MapshaperPipeline>)(pipeline => pipeline.Polygons("arg=value"))];
+        yield return ["-print", (Action<MapshaperPipeline>)(pipeline => pipeline.Print("arg=value"))];
+        yield return ["-proj", (Action<MapshaperPipeline>)(pipeline => pipeline.Project("arg=value"))];
+        yield return ["-projections", (Action<MapshaperPipeline>)(pipeline => pipeline.Projections("arg=value"))];
+        yield return ["-rectangle", (Action<MapshaperPipeline>)(pipeline => pipeline.Rectangle("arg=value"))];
+        yield return ["-rectangles", (Action<MapshaperPipeline>)(pipeline => pipeline.Rectangles("arg=value"))];
+        yield return ["-rename-fields", (Action<MapshaperPipeline>)(pipeline => pipeline.RenameFields("arg=value"))];
+        yield return ["-rename-layers", (Action<MapshaperPipeline>)(pipeline => pipeline.RenameLayers("arg=value"))];
+        yield return ["-require", (Action<MapshaperPipeline>)(pipeline => pipeline.Require("arg=value"))];
+        yield return ["-run", (Action<MapshaperPipeline>)(pipeline => pipeline.Run("arg=value"))];
+        yield return ["-scalebar", (Action<MapshaperPipeline>)(pipeline => pipeline.Scalebar("arg=value"))];
+        yield return ["-shape", (Action<MapshaperPipeline>)(pipeline => pipeline.Shape("arg=value"))];
+        yield return ["-simplify", (Action<MapshaperPipeline>)(pipeline => pipeline.Simplify("arg=value"))];
+        yield return ["-snap", (Action<MapshaperPipeline>)(pipeline => pipeline.Snap("arg=value"))];
+        yield return ["-sort", (Action<MapshaperPipeline>)(pipeline => pipeline.Sort("arg=value"))];
+        yield return ["-split", (Action<MapshaperPipeline>)(pipeline => pipeline.Split("arg=value"))];
+        yield return ["-split-on-grid", (Action<MapshaperPipeline>)(pipeline => pipeline.SplitOnGrid("arg=value"))];
+        yield return ["-stop", (Action<MapshaperPipeline>)(pipeline => pipeline.Stop("arg=value"))];
+        yield return ["-style", (Action<MapshaperPipeline>)(pipeline => pipeline.Style("arg=value"))];
+        yield return ["-subdivide", (Action<MapshaperPipeline>)(pipeline => pipeline.Subdivide("arg=value"))];
+        yield return ["-symbols", (Action<MapshaperPipeline>)(pipeline => pipeline.Symbols("arg=value"))];
+        yield return ["-target", (Action<MapshaperPipeline>)(pipeline => pipeline.Target("arg=value"))];
+        yield return ["-union", (Action<MapshaperPipeline>)(pipeline => pipeline.Union("arg=value"))];
+        yield return ["-uniq", (Action<MapshaperPipeline>)(pipeline => pipeline.Uniq("arg=value"))];
+        yield return ["-version", (Action<MapshaperPipeline>)(pipeline => pipeline.Version("arg=value"))];
+    }
+
     [Fact]
     public async Task RunAsync_PassesRawArgumentsToRunner()
     {
@@ -181,6 +251,148 @@ public sealed class MapshaperClientTests
         await client.ProjectAsync("input.geojson", "wgs84", "output.geojson");
 
         Assert.Equal(["input.geojson", "-proj", "wgs84", "-o", "output.geojson"], runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task Pipeline_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client
+            .CreatePipeline("input.geojson")
+            .Quiet()
+            .Clean()
+            .Filter("POP > 0")
+            .RenameFields("NAME=label")
+            .Output("output.geojson", new MapshaperOutputOptions { Format = "geojson", Force = true })
+            .RunAsync();
+
+        Assert.Equal(
+            [
+                "input.geojson",
+                "-quiet",
+                "-clean",
+                "-filter",
+                "POP > 0",
+                "-rename-fields",
+                "NAME=label",
+                "-o",
+                "output.geojson",
+                "format=geojson",
+                "force",
+            ],
+            runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task Pipeline_WithMultipleInputsAndOptions_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client
+            .CreatePipeline(
+                ["a.geojson", "b.geojson"],
+                new MapshaperImportOptions { Encoding = "utf8", IdField = "ID", CombineFiles = true })
+            .Verbose()
+            .MergeLayers()
+            .Output("output.geojson", new MapshaperOutputOptions { Target = "*", Precision = "0.001" })
+            .RunAsync();
+
+        Assert.Equal(
+            [
+                "-i",
+                "a.geojson",
+                "b.geojson",
+                "encoding=utf8",
+                "id-field=ID",
+                "combine-files",
+                "-verbose",
+                "-merge-layers",
+                "-o",
+                "output.geojson",
+                "precision=0.001",
+                "target=*",
+            ],
+            runner.LastArguments);
+    }
+
+    [Theory]
+    [MemberData(nameof(PipelineCommandWrappers))]
+    public async Task Pipeline_CommandWrappers_AppendExpectedCommandToken(
+        string expectedCommand,
+        Action<MapshaperPipeline> appendCommand)
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        var pipeline = client.CreatePipeline("input.geojson");
+        appendCommand(pipeline);
+        await pipeline.RunAsync();
+
+        Assert.Equal(["input.geojson", expectedCommand, "arg=value"], runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task Pipeline_Command_AllowsRawCommand()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client
+            .CreatePipeline("input.geojson")
+            .Command("-custom", "arg=value")
+            .RunAsync();
+
+        Assert.Equal(["input.geojson", "-custom", "arg=value"], runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task Pipeline_RunOrThrowAsync_ThrowsMapshaperExceptionOnNonZeroExit()
+    {
+        var runner = new FakeProcessRunner
+        {
+            Result = new MapshaperResult(2, "", "pipeline failed", "mapshaper", []),
+        };
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        var exception = await Assert.ThrowsAsync<MapshaperException>(
+            () => client.CreatePipeline("input.geojson").Info().RunOrThrowAsync());
+
+        Assert.Equal(2, exception.ExitCode);
+        Assert.Equal("pipeline failed", exception.StdErr);
+        Assert.Equal(["input.geojson", "-info"], exception.Arguments);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void Pipeline_CommandWrapper_RejectsInvalidArgument(string? argument)
+    {
+        var client = new MapshaperClient(new MapshaperOptions(), new FakeProcessRunner());
+
+        Assert.Throws<ArgumentException>(() => client.CreatePipeline().Filter(argument!));
+    }
+
+    [Fact]
+    public void Pipeline_CommandWrapper_AllowsZeroArguments()
+    {
+        var client = new MapshaperClient(new MapshaperOptions(), new FakeProcessRunner());
+
+        var pipeline = client.CreatePipeline().Clean();
+
+        Assert.NotNull(pipeline);
+    }
+
+    [Fact]
+    public void Pipeline_RejectsQuietAndVerboseTogether()
+    {
+        var client = new MapshaperClient(new MapshaperOptions(), new FakeProcessRunner());
+
+        Assert.Throws<InvalidOperationException>(() => client.CreatePipeline().Quiet().Verbose());
+        Assert.Throws<InvalidOperationException>(() => client.CreatePipeline().Verbose().Quiet());
     }
 
     [Fact]

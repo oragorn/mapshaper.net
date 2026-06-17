@@ -62,6 +62,37 @@ public sealed class MapshaperClient
     }
 
     /// <summary>
+    /// Creates an empty fluent command pipeline.
+    /// </summary>
+    public MapshaperPipeline CreatePipeline()
+    {
+        return new MapshaperPipeline(this);
+    }
+
+    /// <summary>
+    /// Creates a fluent command pipeline that starts by importing input datasets.
+    /// </summary>
+    public MapshaperPipeline CreatePipeline(params string[] inputPaths)
+    {
+        if (inputPaths is null)
+        {
+            throw new ArgumentNullException(nameof(inputPaths));
+        }
+
+        return CreatePipeline(inputPaths.AsEnumerable(), importOptions: null);
+    }
+
+    /// <summary>
+    /// Creates a fluent command pipeline that starts by importing input datasets.
+    /// </summary>
+    public MapshaperPipeline CreatePipeline(
+        IEnumerable<string> inputPaths,
+        MapshaperImportOptions? importOptions = null)
+    {
+        return CreatePipeline().Input(inputPaths, importOptions);
+    }
+
+    /// <summary>
     /// Converts an input dataset to the output path or format inferred by mapshaper.
     /// </summary>
     public Task<MapshaperResult> ConvertAsync(
@@ -425,7 +456,7 @@ public sealed class MapshaperClient
         return new ReadOnlyCollection<string>(arguments);
     }
 
-    private static void AppendMessageOptions(List<string> arguments, MapshaperCommandOptions? options)
+    internal static void AppendMessageOptions(List<string> arguments, MapshaperCommandOptions? options)
     {
         if (options?.Quiet == true)
         {
@@ -438,7 +469,7 @@ public sealed class MapshaperClient
         }
     }
 
-    private static void AppendInputArguments(
+    internal static void AppendInputArguments(
         List<string> arguments,
         IReadOnlyList<string> inputPaths,
         MapshaperImportOptions? options)
@@ -468,7 +499,7 @@ public sealed class MapshaperClient
         }
     }
 
-    private static void AppendOutputArguments(
+    internal static void AppendOutputArguments(
         List<string> arguments,
         string outputPath,
         MapshaperOutputOptions? options)
@@ -538,7 +569,7 @@ public sealed class MapshaperClient
         return new ReadOnlyCollection<string>(normalized);
     }
 
-    private static IReadOnlyList<string> NormalizePaths(IEnumerable<string> paths, string parameterName)
+    internal static IReadOnlyList<string> NormalizePaths(IEnumerable<string> paths, string parameterName)
     {
         if (paths is null)
         {
@@ -597,7 +628,7 @@ public sealed class MapshaperClient
         return options;
     }
 
-    private static void ValidateCommandOptions(MapshaperCommandOptions? options)
+    internal static void ValidateCommandOptions(MapshaperCommandOptions? options)
     {
         if (options is null)
         {
@@ -625,12 +656,12 @@ public sealed class MapshaperClient
         }
     }
 
-    private static void ValidatePath(string path, string parameterName)
+    internal static void ValidatePath(string path, string parameterName)
     {
         ValidateValue(path, parameterName);
     }
 
-    private static void ValidateValue(string value, string parameterName)
+    internal static void ValidateValue(string value, string parameterName)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -638,7 +669,7 @@ public sealed class MapshaperClient
         }
     }
 
-    private static void ValidateOptionalValue(string? value, string parameterName)
+    internal static void ValidateOptionalValue(string? value, string parameterName)
     {
         if (value is not null)
         {
