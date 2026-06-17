@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: mapshaper CLI questions
+    url: https://github.com/mbloch/mapshaper
+    about: Ask upstream mapshaper questions or report mapshaper CLI behavior.
