@@ -24,7 +24,7 @@ internal sealed class DefaultMapshaperProcessRunner : IMapshaperProcessRunner
             startInfo.WorkingDirectory = options.WorkingDirectory;
         }
 
-        startInfo.Arguments = BuildArgumentString(arguments);
+        MapshaperProcessArguments.AddTo(startInfo, arguments);
 
         using var process = new Process { StartInfo = startInfo };
 
@@ -141,7 +141,21 @@ internal sealed class DefaultMapshaperProcessRunner : IMapshaperProcessRunner
         }
     }
 
-    private static string BuildArgumentString(IEnumerable<string> arguments)
+}
+
+internal static class MapshaperProcessArguments
+{
+    public static void AddTo(ProcessStartInfo startInfo, IEnumerable<string> arguments)
+    {
+        if (TryAddWithArgumentList(startInfo, arguments))
+        {
+            return;
+        }
+
+        startInfo.Arguments = BuildArgumentString(arguments);
+    }
+
+    internal static string BuildArgumentString(IEnumerable<string> arguments)
     {
         return string.Join(" ", arguments.Select(QuoteArgument));
     }
@@ -186,5 +200,23 @@ internal sealed class DefaultMapshaperProcessRunner : IMapshaperProcessRunner
         quoted.Append('\\', backslashCount * 2);
         quoted.Append('"');
         return quoted.ToString();
+    }
+
+    private static bool TryAddWithArgumentList(ProcessStartInfo startInfo, IEnumerable<string> arguments)
+    {
+        var argumentListProperty = typeof(ProcessStartInfo).GetProperty("ArgumentList");
+        var argumentList = argumentListProperty?.GetValue(startInfo);
+        var addMethod = argumentList?.GetType().GetMethod("Add", [typeof(string)]);
+        if (addMethod is null)
+        {
+            return false;
+        }
+
+        foreach (var argument in arguments)
+        {
+            addMethod.Invoke(argumentList, [argument]);
+        }
+
+        return true;
     }
 }
