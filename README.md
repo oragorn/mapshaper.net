@@ -127,9 +127,9 @@ var client = new MapshaperClient(new MapshaperOptions
 ```csharp
 var result = await client.RunAsync("input.geojson", "-info");
 
-if (!result.Success)
+if (!result.IsSuccess)
 {
-    Console.Error.WriteLine(result.StandardError);
+    Console.Error.WriteLine(result.StdErr);
 }
 ```
 
@@ -154,6 +154,12 @@ dotnet test
 ```
 
 Integration tests that execute mapshaper require the `mapshaper` command to be installed and available on `PATH`.
+
+## Documentation
+
+- [Documentation index](docs/README.md)
+- [Getting Started](docs/Getting-Started.md)
+- [Supported Functions](docs/Supported-Functions.md)
 
 ## Releasing
 
