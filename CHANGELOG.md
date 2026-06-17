@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0 - 2026-06-17
+
+### Added
+
+- Added a fluent `MapshaperPipeline` API for composing multi-command mapshaper workflows.
+- Added pipeline wrappers for common mapshaper commands while preserving raw argument pass-through.
+- Documented supported client methods, pipeline commands, options, result handling, and runtime requirements.
+
+### Changed
+
+- Clarified runtime setup guidance for the external mapshaper CLI and Node.js.
+- Expanded README examples for pipeline usage, options, failure handling, and documentation links.
+
 ## 0.1.0 - 2026-06-16
 
 ### Changed
