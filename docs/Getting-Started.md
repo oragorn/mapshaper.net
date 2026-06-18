@@ -69,6 +69,15 @@ var result = await client.RunAsync(
     "output.geojson");
 ```
 
+Use high-level helpers for common file workflows:
+
+```csharp
+await client.CleanAsync("input.geojson", "clean.geojson");
+await client.RenameFieldsAsync("clean.geojson", ["NAME=label"], "renamed.geojson");
+
+var info = await client.InfoAsync("renamed.geojson");
+```
+
 Compose a fluent command pipeline:
 
 ```csharp

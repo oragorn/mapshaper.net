@@ -255,6 +255,139 @@ public sealed class MapshaperClient
     }
 
     /// <summary>
+    /// Cleans an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> CleanAsync(
+        string inputPath,
+        string outputPath,
+        CancellationToken cancellationToken = default)
+    {
+        return CleanAsync(inputPath, outputPath, cleanArguments: [], options: null, cancellationToken);
+    }
+
+    /// <summary>
+    /// Cleans an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> CleanAsync(
+        string inputPath,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return CleanAsync(inputPath, outputPath, cleanArguments: [], options, cancellationToken);
+    }
+
+    /// <summary>
+    /// Cleans an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> CleanAsync(
+        string inputPath,
+        string outputPath,
+        IEnumerable<string> cleanArguments,
+        MapshaperCommandOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        return RunAsync(
+            BuildOutputCommand(inputPath, outputPath, "-clean", NormalizeCommandArguments(cleanArguments, nameof(cleanArguments)), options),
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Cleans an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> CleanAsync(
+        FileInfo inputFile,
+        FileInfo outputFile,
+        CancellationToken cancellationToken = default)
+    {
+        return CleanAsync(GetFullName(inputFile), GetFullName(outputFile), cancellationToken);
+    }
+
+    /// <summary>
+    /// Cleans an input dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> CleanAsync(
+        FileInfo inputFile,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return CleanAsync(GetFullName(inputFile), GetFullName(outputFile), options, cancellationToken);
+    }
+
+    /// <summary>
+    /// Erases parts of an input dataset using another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> EraseAsync(
+        string inputPath,
+        string erasePath,
+        string outputPath,
+        CancellationToken cancellationToken = default)
+    {
+        return EraseAsync(inputPath, erasePath, outputPath, eraseArguments: [], options: null, cancellationToken);
+    }
+
+    /// <summary>
+    /// Erases parts of an input dataset using another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> EraseAsync(
+        string inputPath,
+        string erasePath,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return EraseAsync(inputPath, erasePath, outputPath, eraseArguments: [], options, cancellationToken);
+    }
+
+    /// <summary>
+    /// Erases parts of an input dataset using another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> EraseAsync(
+        string inputPath,
+        string erasePath,
+        string outputPath,
+        IEnumerable<string> eraseArguments,
+        MapshaperCommandOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        ValidatePath(erasePath, nameof(erasePath));
+        return RunAsync(
+            BuildOutputCommand(
+                inputPath,
+                outputPath,
+                "-erase",
+                [erasePath, .. NormalizeCommandArguments(eraseArguments, nameof(eraseArguments))],
+                options),
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Erases parts of an input dataset using another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> EraseAsync(
+        FileInfo inputFile,
+        FileInfo eraseFile,
+        FileInfo outputFile,
+        CancellationToken cancellationToken = default)
+    {
+        return EraseAsync(GetFullName(inputFile), GetFullName(eraseFile), GetFullName(outputFile), cancellationToken);
+    }
+
+    /// <summary>
+    /// Erases parts of an input dataset using another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> EraseAsync(
+        FileInfo inputFile,
+        FileInfo eraseFile,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return EraseAsync(GetFullName(inputFile), GetFullName(eraseFile), GetFullName(outputFile), options, cancellationToken);
+    }
+
+    /// <summary>
     /// Dissolves features using a field and writes the result to the output path.
     /// </summary>
     public Task<MapshaperResult> DissolveAsync(
@@ -359,6 +492,130 @@ public sealed class MapshaperClient
     }
 
     /// <summary>
+    /// Joins data from another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> JoinAsync(
+        string inputPath,
+        string joinPath,
+        string outputPath,
+        CancellationToken cancellationToken = default)
+    {
+        return JoinAsync(inputPath, joinPath, outputPath, joinArguments: [], options: null, cancellationToken);
+    }
+
+    /// <summary>
+    /// Joins data from another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> JoinAsync(
+        string inputPath,
+        string joinPath,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return JoinAsync(inputPath, joinPath, outputPath, joinArguments: [], options, cancellationToken);
+    }
+
+    /// <summary>
+    /// Joins data from another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> JoinAsync(
+        string inputPath,
+        string joinPath,
+        string outputPath,
+        IEnumerable<string> joinArguments,
+        MapshaperCommandOptions? options = null,
+        CancellationToken cancellationToken = default)
+    {
+        ValidatePath(joinPath, nameof(joinPath));
+        return RunAsync(
+            BuildOutputCommand(
+                inputPath,
+                outputPath,
+                "-join",
+                [joinPath, .. NormalizeCommandArguments(joinArguments, nameof(joinArguments))],
+                options),
+            cancellationToken);
+    }
+
+    /// <summary>
+    /// Joins data from another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> JoinAsync(
+        FileInfo inputFile,
+        FileInfo joinFile,
+        FileInfo outputFile,
+        CancellationToken cancellationToken = default)
+    {
+        return JoinAsync(GetFullName(inputFile), GetFullName(joinFile), GetFullName(outputFile), cancellationToken);
+    }
+
+    /// <summary>
+    /// Joins data from another dataset and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> JoinAsync(
+        FileInfo inputFile,
+        FileInfo joinFile,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return JoinAsync(GetFullName(inputFile), GetFullName(joinFile), GetFullName(outputFile), options, cancellationToken);
+    }
+
+    /// <summary>
+    /// Renames fields and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> RenameFieldsAsync(
+        string inputPath,
+        IEnumerable<string> fieldRenames,
+        string outputPath,
+        CancellationToken cancellationToken = default)
+    {
+        var renameList = NormalizeFields(fieldRenames);
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-rename-fields", string.Join(",", renameList), options: null), cancellationToken);
+    }
+
+    /// <summary>
+    /// Renames fields and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> RenameFieldsAsync(
+        string inputPath,
+        IEnumerable<string> fieldRenames,
+        string outputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        var renameList = NormalizeFields(fieldRenames);
+        return RunAsync(BuildOutputCommand(inputPath, outputPath, "-rename-fields", string.Join(",", renameList), options), cancellationToken);
+    }
+
+    /// <summary>
+    /// Renames fields and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> RenameFieldsAsync(
+        FileInfo inputFile,
+        IEnumerable<string> fieldRenames,
+        FileInfo outputFile,
+        CancellationToken cancellationToken = default)
+    {
+        return RenameFieldsAsync(GetFullName(inputFile), fieldRenames, GetFullName(outputFile), cancellationToken);
+    }
+
+    /// <summary>
+    /// Renames fields and writes the result to the output path.
+    /// </summary>
+    public Task<MapshaperResult> RenameFieldsAsync(
+        FileInfo inputFile,
+        IEnumerable<string> fieldRenames,
+        FileInfo outputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return RenameFieldsAsync(GetFullName(inputFile), fieldRenames, GetFullName(outputFile), options, cancellationToken);
+    }
+
+    /// <summary>
     /// Projects an input dataset and writes the result to the output path.
     /// </summary>
     public Task<MapshaperResult> ProjectAsync(
@@ -410,6 +667,48 @@ public sealed class MapshaperClient
         return ProjectAsync(GetFullName(inputFile), projection, GetFullName(outputFile), options, cancellationToken);
     }
 
+    /// <summary>
+    /// Prints information about an input dataset.
+    /// </summary>
+    public Task<MapshaperResult> InfoAsync(
+        string inputPath,
+        CancellationToken cancellationToken = default)
+    {
+        return RunAsync(BuildInputCommand(inputPath, "-info", commandArguments: [], options: null), cancellationToken);
+    }
+
+    /// <summary>
+    /// Prints information about an input dataset.
+    /// </summary>
+    public Task<MapshaperResult> InfoAsync(
+        string inputPath,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return RunAsync(BuildInputCommand(inputPath, "-info", commandArguments: [], options), cancellationToken);
+    }
+
+    /// <summary>
+    /// Prints information about an input dataset.
+    /// </summary>
+    public Task<MapshaperResult> InfoAsync(
+        FileInfo inputFile,
+        CancellationToken cancellationToken = default)
+    {
+        return InfoAsync(GetFullName(inputFile), cancellationToken);
+    }
+
+    /// <summary>
+    /// Prints information about an input dataset.
+    /// </summary>
+    public Task<MapshaperResult> InfoAsync(
+        FileInfo inputFile,
+        MapshaperCommandOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        return InfoAsync(GetFullName(inputFile), options, cancellationToken);
+    }
+
     private static IReadOnlyList<string> BuildConvertArguments(
         string inputPath,
         string outputPath,
@@ -442,6 +741,16 @@ public sealed class MapshaperClient
         string commandValue,
         MapshaperCommandOptions? options)
     {
+        return BuildOutputCommand(inputPath, outputPath, command, [commandValue], options);
+    }
+
+    private static IReadOnlyList<string> BuildOutputCommand(
+        string inputPath,
+        string outputPath,
+        string command,
+        IReadOnlyList<string> commandArguments,
+        MapshaperCommandOptions? options)
+    {
         var normalizedInputPaths = NormalizePaths([inputPath], nameof(inputPath));
         ValidatePath(outputPath, nameof(outputPath));
         ValidateCommandOptions(options);
@@ -450,8 +759,31 @@ public sealed class MapshaperClient
         AppendInputArguments(arguments, normalizedInputPaths, options?.Import);
         AppendMessageOptions(arguments, options);
         arguments.Add(command);
-        arguments.Add(commandValue);
+        arguments.AddRange(commandArguments);
         AppendOutputArguments(arguments, outputPath, options?.Output);
+
+        return new ReadOnlyCollection<string>(arguments);
+    }
+
+    private static IReadOnlyList<string> BuildInputCommand(
+        string inputPath,
+        string command,
+        IReadOnlyList<string> commandArguments,
+        MapshaperCommandOptions? options)
+    {
+        var normalizedInputPaths = NormalizePaths([inputPath], nameof(inputPath));
+        ValidateCommandOptions(options);
+
+        if (options?.Output is not null)
+        {
+            throw new ArgumentException("Output options cannot be used with commands that do not write an output file.", nameof(options));
+        }
+
+        var arguments = new List<string>();
+        AppendInputArguments(arguments, normalizedInputPaths, options?.Import);
+        AppendMessageOptions(arguments, options);
+        arguments.Add(command);
+        arguments.AddRange(commandArguments);
 
         return new ReadOnlyCollection<string>(arguments);
     }
@@ -606,6 +938,22 @@ public sealed class MapshaperClient
         foreach (var field in normalized)
         {
             ValidateValue(field, nameof(fields));
+        }
+
+        return new ReadOnlyCollection<string>(normalized);
+    }
+
+    private static IReadOnlyList<string> NormalizeCommandArguments(IEnumerable<string> arguments, string parameterName)
+    {
+        if (arguments is null)
+        {
+            throw new ArgumentNullException(parameterName);
+        }
+
+        var normalized = arguments.ToArray();
+        foreach (var argument in normalized)
+        {
+            ValidateValue(argument, parameterName);
         }
 
         return new ReadOnlyCollection<string>(normalized);

@@ -221,6 +221,45 @@ public sealed class MapshaperClientTests
     }
 
     [Fact]
+    public async Task CleanAsync_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.CleanAsync("input.geojson", "output.geojson");
+
+        Assert.Equal(["input.geojson", "-clean", "-o", "output.geojson"], runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task CleanAsync_WithCommandArguments_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.CleanAsync(
+            "input.geojson",
+            "output.geojson",
+            ["gap-fill-area=100"],
+            new MapshaperCommandOptions { Quiet = true });
+
+        Assert.Equal(
+            ["input.geojson", "-quiet", "-clean", "gap-fill-area=100", "-o", "output.geojson"],
+            runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task EraseAsync_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.EraseAsync("input.geojson", "erase.geojson", "output.geojson");
+
+        Assert.Equal(["input.geojson", "-erase", "erase.geojson", "-o", "output.geojson"], runner.LastArguments);
+    }
+
+    [Fact]
     public async Task DissolveAsync_BuildsExpectedArguments()
     {
         var runner = new FakeProcessRunner();
@@ -243,6 +282,28 @@ public sealed class MapshaperClientTests
     }
 
     [Fact]
+    public async Task JoinAsync_WithCommandArguments_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.JoinAsync("input.geojson", "table.csv", "output.geojson", ["keys=GEOID", "fields=NAME"]);
+
+        Assert.Equal(["input.geojson", "-join", "table.csv", "keys=GEOID", "fields=NAME", "-o", "output.geojson"], runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task RenameFieldsAsync_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.RenameFieldsAsync("input.geojson", ["NAME=label", "CODE=id"], "output.geojson");
+
+        Assert.Equal(["input.geojson", "-rename-fields", "NAME=label,CODE=id", "-o", "output.geojson"], runner.LastArguments);
+    }
+
+    [Fact]
     public async Task ProjectAsync_BuildsExpectedArguments()
     {
         var runner = new FakeProcessRunner();
@@ -251,6 +312,34 @@ public sealed class MapshaperClientTests
         await client.ProjectAsync("input.geojson", "wgs84", "output.geojson");
 
         Assert.Equal(["input.geojson", "-proj", "wgs84", "-o", "output.geojson"], runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task InfoAsync_BuildsExpectedArguments()
+    {
+        var runner = new FakeProcessRunner();
+        var client = new MapshaperClient(new MapshaperOptions(), runner);
+
+        await client.InfoAsync(
+            "input.geojson",
+            new MapshaperCommandOptions
+            {
+                Verbose = true,
+                Import = new MapshaperImportOptions { Encoding = "utf8" },
+            });
+
+        Assert.Equal(["-i", "input.geojson", "encoding=utf8", "-verbose", "-info"], runner.LastArguments);
+    }
+
+    [Fact]
+    public async Task InfoAsync_RejectsOutputOptions()
+    {
+        var client = new MapshaperClient(new MapshaperOptions(), new FakeProcessRunner());
+
+        await Assert.ThrowsAsync<ArgumentException>(
+            () => client.InfoAsync(
+                "input.geojson",
+                new MapshaperCommandOptions { Output = new MapshaperOutputOptions { Format = "geojson" } }));
     }
 
     [Fact]

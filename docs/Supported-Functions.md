@@ -19,11 +19,16 @@ The library targets `netstandard2.0` and is intended to run on major .NET-suppor
 | `ConvertAsync(...)` | `-o` | Converts one or more input datasets to an output path or mapshaper-inferred format. |
 | `SimplifyAsync(...)` | `-simplify` | Simplifies an input dataset by an amount such as `10%` and writes an output dataset. |
 | `ClipAsync(...)` | `-clip` | Clips an input dataset using another dataset and writes an output dataset. |
+| `CleanAsync(...)` | `-clean` | Cleans an input dataset and writes an output dataset. |
+| `EraseAsync(...)` | `-erase` | Erases parts of an input dataset using another dataset and writes an output dataset. |
 | `DissolveAsync(...)` | `-dissolve` | Dissolves features using a field and writes an output dataset. |
 | `FilterFieldsAsync(...)` | `-filter-fields` | Keeps only selected fields and writes an output dataset. |
+| `JoinAsync(...)` | `-join` | Joins data from another dataset and writes an output dataset. |
+| `RenameFieldsAsync(...)` | `-rename-fields` | Renames fields and writes an output dataset. |
 | `ProjectAsync(...)` | `-proj` | Projects an input dataset and writes an output dataset. |
+| `InfoAsync(...)` | `-info` | Prints information about an input dataset. |
 
-The high-level file workflow methods support both string paths and `FileInfo` overloads where applicable. Methods that write output also accept `MapshaperCommandOptions` overloads for common import, output, quiet, and verbose flags.
+The high-level file workflow methods support both string paths and `FileInfo` overloads where applicable. Methods that write output also accept `MapshaperCommandOptions` overloads for common import, output, quiet, and verbose flags. `InfoAsync(...)` accepts import, quiet, and verbose options but rejects output options because it does not write an output file.
 
 ## High-level examples
 
@@ -62,6 +67,17 @@ var result = await client.RunAsync(
     "POP > 0",
     "-o",
     "output.geojson");
+```
+
+Clean and rename fields with discoverable helpers:
+
+```csharp
+await client.CleanAsync("input.geojson", "clean.geojson");
+
+await client.RenameFieldsAsync(
+    "clean.geojson",
+    ["NAME=label", "GEOID=id"],
+    "renamed.geojson");
 ```
 
 ## MapshaperPipeline

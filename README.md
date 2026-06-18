@@ -10,7 +10,7 @@ This package does not bundle mapshaper. Install mapshaper separately and ensure 
 
 - Runs the external mapshaper CLI from .NET code.
 - Captures exit code, standard output, standard error, and the exact argument list used.
-- Provides convenience methods for common workflows like convert, simplify, clip, dissolve, filter fields, and project.
+- Provides convenience methods for common workflows like convert, simplify, clean, erase, join, rename fields, and inspect info.
 - Includes a fluent pipeline builder for composing mapshaper command sequences.
 - Supports raw mapshaper arguments for commands that are not modeled directly.
 - Targets `netstandard2.0` for broad .NET compatibility.
@@ -75,6 +75,15 @@ Use `RunAsync()` for raw mapshaper arguments:
 
 ```csharp
 var result = await client.RunAsync("input.geojson", "-simplify", "10%", "-o", "output.geojson");
+```
+
+Use high-level helpers for common file workflows:
+
+```csharp
+await client.CleanAsync("input.geojson", "clean.geojson");
+await client.RenameFieldsAsync("clean.geojson", ["NAME=label"], "renamed.geojson");
+
+var info = await client.InfoAsync("renamed.geojson");
 ```
 
 Use `CreatePipeline()` to compose thin wrappers for mapshaper commands:
