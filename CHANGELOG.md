@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 - 2026-06-18
+
+### Added
+
+- Added typed `CleanAsync`, `EraseAsync`, `JoinAsync`, `RenameFieldsAsync`, and `InfoAsync` helpers to `MapshaperClient`.
+- Added integration coverage that runs against the mapshaper CLI in CI.
+
+### Changed
+
+- Use `ProcessStartInfo.ArgumentList` when available for safer, platform-native command argument handling while retaining compatibility with `netstandard2.0` runtimes.
+- Kept the broader mapshaper command surface in `MapshaperPipeline`, with raw argument pass-through for command-specific options.
+
 ## 0.2.0 - 2026-06-17
 
 ### Added
